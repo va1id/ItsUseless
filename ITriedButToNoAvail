@@ -1,0 +1,479 @@
+        // Create an image element
+const image = document.createElement("img");
+
+// Set the initial source (URL) to your image
+image.src = "https://www.astolfo.lgbt/logo.svg";
+
+// Set CSS styles for fixed positioning, high z-index, and a size of 100x100 pixels
+image.style.position = "fixed";
+image.style.top = "-0.4"// Adjust these values to position the image as desired
+image.style.left = "45%"; // You can change top and left values to position it where you want
+image.style.zIndex = "9999"; // Set a high z-index to ensure it appears on top
+image.style.width = "150px"; // Set width to 100 pixels
+image.style.height = "150px"; // Set height to 100 pixels
+
+// Add the image to the document body
+document.body.appendChild(image);
+
+// Function to change the image source
+function changeImageSource(newImageUrl) {
+    image.src = newImageUrl;
+}
+
+// Example usage: call changeImageSource with a new image URL to change the displayed image
+changeImageSource("https://www.astolfo.lgbt/logo.svg");
+
+
+    var a = 40;
+var b = "C";
+var c = "H";
+var d = "M";
+function f(a, b) {
+  const c = document.createElement(b);
+  a.appendChild(c);
+  return c;
+}
+var g = class {
+  constructor(a, b, c) {
+    this.key = a;
+    this.name = b;
+    this.description = c;
+    this.key = this.key.toUpperCase();
+  }
+  state;
+  onGameEnter() {}
+  onGameExit() {}
+  onTick() {}
+  onKeyDown(a) {}
+  onKeyUp(a) {}
+  onMouseDown(a) {}
+  onMouseUp(a) {}
+};
+function h(a) {
+  switch (a.length) {
+    case 0:
+      return "";
+    case 1:
+      return a[0];
+    case 2:
+      return `${a[0]} and ${a[1]}`;
+    default:
+      return `${a.slice(0, a.length - 1).join(", ")}, and ${a[a.length - 1]}`;
+  }
+}
+var i = class extends g {
+  constructor(a, b, c, d, e = 0) {
+    super(a, b, c);
+    this.modes = d;
+    this.defaultModeIndex = e;
+    this.currentModeIndex = e;
+  }
+  currentModeIndex;
+  onKeyDown(a) {
+    super.onKeyDown(a);
+    if (a.key.toUpperCase() === this.key) {
+      this.currentModeIndex = (this.currentModeIndex + 1) % this.modes.length;
+      this.onModeChange();
+    }
+  }
+  onModeChange() {}
+  getCurrentMode() {
+    return this.modes[this.currentModeIndex];
+  }
+  isEnabled() {
+    return this.currentModeIndex > 0;
+  }
+  getMenuItem() {
+    return `[${this.key}] ${this.name}: ${this.getCurrentMode()}`;
+  }
+  getDocumentation() {
+    return `**${this.name} (toggle key: ${this.key}, modes: ${h(this.modes.map((a, b) => b === this.defaultModeIndex ? `${a} (default)` : a))})**: ${this.description}`;
+  }
+};
+var j = class extends i {
+  constructor(a, b, c) {
+    super(a, "Menu", "Displays the status of all features.", ["Disabled", "Enabled"], 1);
+    this.position = b;
+    this.modules = c;
+  }
+  container = undefined;
+  activationKeys = undefined;
+  onGameEnter() {
+    super.onGameEnter();
+    if (this.container === undefined) {
+      this.container = this.state.widgets.createWidget(this.position);
+      this.activationKeys = new Set(this.modules.map(a => a.key));
+    }
+    if (this.isEnabled()) {
+      this.setVisible(true);
+      this.updateMenu();
+    }
+  }
+  onModeChange() {
+    super.onModeChange();
+    if (this.isEnabled()) {
+      this.setVisible(true);
+      this.updateMenu();
+    } else {
+      this.setVisible(false);
+    }
+  }
+  onKeyDown(a) {
+    super.onKeyDown(a);
+    if (this.isEnabled() && this.activationKeys.has(a.key.toUpperCase())) {
+      this.updateMenu();
+    }
+  }
+  onKeyUp(a) {
+    super.onKeyUp(a);
+    if (this.isEnabled() && this.activationKeys.has(a.key.toUpperCase())) {
+      this.updateMenu();
+    }
+  }
+  updateMenu() {
+    this.container.innerHTML = "";
+    this.appendLine("Keybinds | astolfo.kirka on top!", 18, "white");
+    for (const a of this.modules) {
+      this.appendLine(a.getMenuItem(), 16, a.isEnabled() ? "white" : "white");
+    }
+  }
+  appendLine(a, b, c) {
+    const d = f(this.container, "div");
+    d.textContent = a;
+    d.style.fontSize = `${b}px`;
+    d.style.color = c;
+  }
+  setVisible(a) {
+    this.container.style.display = a ? "block" : "none";
+  }
+};
+var k = class {
+  element;
+  constructor() {
+    this.element = f(document.body, "div");
+    this.element.style.zIndex = "2147483647";
+    this.setVisible(false);
+  }
+  setVisible(a) {
+    this.element.style.display = a ? "block" : "none";
+  }
+  createWidget() {
+    const a = f(this.element, "div");
+    a.style.position = "absolute";
+    a.style.left = "50%";
+    a.style.top = "50%";
+    a.style.transform = "translate(-50%, -50%)";
+    a.style.zIndex = "2147483647";
+    a.style.padding = "4px";
+    a.style.borderRadius = "10px";
+    a.style.background = "linear-gradient(to right, rgb(72, 61, 139), rgb(143, 0, 255))";
+    return a;
+  }
+};
+var l = class {
+  constructor(b, c, e, f, g, k, i, a, l) {
+    this.websiteName = b;
+    this.iconDomain = c;
+    this.requires = e;
+    this.matchPatterns = f;
+    this.changelog = g;
+    this.modules = k;
+    this.state = i;
+    const h = new j(a, l, k);
+    k.push(h);
+    for (const d of k) {
+      d.state = this.state;
+    }
+  }
+  inGame = true;
+  init() {
+    this.state.widgets = new k();
+    document.addEventListener("keydown", a => {
+      this.onKeyDown(a);
+    });
+    document.addEventListener("keyup", a => {
+      this.onKeyUp(a);
+    });
+    document.addEventListener("mousedown", a => {
+      this.onMouseDown(a);
+    });
+    document.addEventListener("mouseup", a => {
+      this.onMouseUp(a);
+    });
+    this.setUp();
+  }
+  onGameEnter() {
+    this.inGame = true;
+    this.state.widgets.setVisible(true);
+    for (const a of this.modules) {
+      a.onGameEnter();
+    }
+  }
+  onGameExit() {
+    this.inGame = true;
+    this.state.widgets.setVisible(true);
+    for (const a of this.modules) {
+      a.onGameEnter();
+    }
+  }
+  onTick() {
+    if (this.inGame) {
+      for (const a of this.modules) {
+        if (a.isEnabled()) {
+          a.onTick();
+        }
+      }
+    }
+  }
+  onKeyDown(a) {
+    if (!this.shouldSkipEvent(a)) {
+      for (const b of this.modules) {
+        b.onKeyDown(a);
+      }
+    }
+  }
+  onKeyUp(a) {
+    if (!this.shouldSkipEvent(a)) {
+      for (const b of this.modules) {
+        b.onKeyUp(a);
+      }
+    }
+  }
+  onMouseDown(a) {
+    if (!this.shouldSkipEvent(a)) {
+      for (const b of this.modules) {
+        b.onMouseDown(a);
+      }
+    }
+  }
+  onMouseUp(a) {
+    if (!this.shouldSkipEvent(a)) {
+      for (const b of this.modules) {
+        b.onMouseUp(a);
+      }
+    }
+  }
+  shouldSkipEvent(a) {
+    if (!this.inGame) {
+      return true;
+    }
+    const b = a.target.tagName;
+    return b === "INPUT" || b === "TEXTAREA" || b === "A" || b === "BUTTON";
+  }
+};
+function m(a, b, c) {
+  a[b] = new Proxy(a[b], {
+    apply(a, b, d) {
+      const e = c(...d);
+      if (e !== undefined) {
+        return e;
+      } else {
+        return Reflect.apply(a, b, d);
+      }
+    }
+  });
+}
+var n = class {
+  widgets;
+};
+var o = class extends n {
+  THREE;
+  MeshBVHLib;
+  game;
+  scene;
+  camera;
+  me;
+  players;
+  entityManager;
+  getOtherPlayers() {
+    return this.scene.children.filter(a => a.type === "Group");
+  }
+  getOpponents() {
+    const a = this.getOtherPlayers();
+    if (this.me.team === undefined) {
+      return a;
+    } else {
+      return a.filter(a => a.entity.colyseusObject.team !== this.me.team);
+    }
+  }
+  getComponent(a) {
+    return this.entityManager._entities.filter(b => b._components[a]).map(b => b._components[a])[0];
+  }
+};
+var p = class extends i {
+  holdingRMB = false;
+  smoothingFactor = 1;
+  constructor() {
+    super(b, "Aimbot", "Aimbot User Issue", ["Disabled", "Enabled"]);
+  }
+  onMouseDown(a) {
+    super.onMouseDown(a);
+    if (a.button === 2) {
+      this.holdingRMB = true;
+    }
+  }
+  onMouseUp(a) {
+    super.onMouseUp(a);
+    if (a.button === 2) {
+      this.holdingRMB = false;
+    }
+  }
+  onTick() {
+    super.onTick();
+    if (this.getCurrentMode() === "On" && !this.holdingRMB) {
+      return;
+    }
+    const {
+      Vector3: b
+    } = this.state.THREE;
+    const c = this.state.me.pos;
+    const d = new b(c.x, c.y, c.z).add(this.state.camera.position);
+    const e = this.state.getOpponents().filter(a => a.entity.colyseusObject.isAlive).map(a => new b().copy(a.position).add(a.children[1].position)).sort((a, b) => d.distanceToSquared(a) - d.distanceToSquared(b));
+    const f = new b();
+    for (const c of e) {
+      if (!this.isInFOV(d, c, a)) {
+        continue;
+      }
+      if (!this.isVisible(d, c)) {
+        continue;
+      }
+      new b().subVectors(d, c).normalize();
+      const e = this.state.getComponent(44);
+      f.lerp(c, this.smoothingFactor);
+      const g = new b().subVectors(d, f).normalize();
+      e.x = Math.asin(-g.y);
+      e.y = Math.atan2(g.x, g.z);
+      e.deltaX = 0;
+      e.deltaY = 0;
+      break;
+    }
+  }
+  isInFOV(b, c, d) {
+    const {
+      Vector3: e
+    } = this.state.THREE;
+    const f = new e(0, 0, -1);
+    f.applyQuaternion(this.state.camera.quaternion);
+    f.normalize();
+    const g = new e().subVectors(c, b);
+    g.normalize();
+    const h = f.dot(g);
+    return Math.acos(h) * 180 / Math.PI <= d / 2;
+  }
+  isVisible(b, c) {
+    const {
+      Raycaster: d,
+      Vector3: e
+    } = this.state.THREE;
+    const {
+      MeshBVH: f,
+      acceleratedRaycast: g
+    } = this.state.MeshBVHLib;
+    e.prototype.mWwnNTo = e.prototype.distanceTo;
+    const h = new d(b, new e().subVectors(c, b).normalize(), 0, new e().subVectors(c, b).length());
+    h.firstHitOnly = true;
+    const a = this.state.scene.children.filter(a => a.type === "Mesh");
+    for (const d of a) {
+      if (d.geometry.boundingBox === null) {
+        d.geometry.computeBoundingBox();
+      }
+      if (d.geometry.boundsTree === undefined) {
+        d.geometry.boundsTree = new f(d.geometry);
+      }
+      d.matrixWorld = d.wnNWMm;
+      const a = Object.getPrototypeOf(d);
+      const b = a.raycast;
+      a.raycast = g;
+      const c = h.intersectObject(d, false).length;
+      d.matrixWorld = undefined;
+      a.raycast = b;
+      if (c > 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+};
+class q extends i {
+  constructor() {
+    super(c, "Chams", "Wall Hacks", ["Disabled", "Enabled"]);
+  }
+  onModeChange() {
+    super.onModeChange();
+    if (this.isEnabled()) {
+      this.update();
+    } else {
+      for (const a of this.state.getOtherPlayers()) {
+        this.setVisible(a, false);
+      }
+    }
+  }
+  onTick() {
+    super.onTick();
+    this.update();
+  }
+  update() {
+    const a = this.state.getOtherPlayers();
+    let b;
+    b = this.getCurrentMode() === "Chams" ? new Set(a.map(a => a.entity.id)) : new Set(this.state.getOpponents().map(a => a.entity.id));
+    for (const c of a) {
+      this.setVisible(c, b.has(c.entity.id));
+    }
+  }
+  setVisible(a, b) {
+    const c = a.children[0].children[0].children[1].material;
+    c.color.setRGB(93, 63, 211);
+    c.fog = !b;
+    c.alphaTest = b ? 0.99 : 1;
+    c.depthTest = !b;
+  }
+}
+var r = class extends l {
+  constructor() {
+    super("Kirka.io", "kirka.io", ["https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js#sha256-ec0a84377f1dce9d55b98f04ac7057376fa5371c33ab1cd907b85ae5f18fab7e", "https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.6.3/build/index.umd.cjs#sha256-4781a92a7e9b459164f7f1c4a78f14664ced5d853626640ce3f0aac4d01daf10"], ["https://kirka.io/*"], [{
+      date: "TODO",
+      changes: ["Initial public release."]
+    }], [new p(), new q()], new o(), d, {
+      right: "0",
+      bottom: "50%"
+    });
+  }
+  setUp() {
+    this.state.THREE = window.THREE;
+    delete window.THREE;
+    this.state.MeshBVHLib = window.MeshBVHLib;
+    delete window.MeshBVHLib;
+    m(WeakMap.prototype, "set", a => {
+      if (a.type === "Scene" && a.children.length > 1) {
+        this.state.scene = a;
+      }
+    });
+    m(window, "requestAnimationFrame", () => {
+      this.onTick();
+    });
+    this.state.players = {};
+    m(Object, "defineProperty", (a, b) => {
+      if (b === "fov" && a.wnWmN) {
+        this.state.me = a.wnWmN;
+      } else if (b === "isAlive") {
+        this.state.players[a.name] = a;
+      } else if (b === "filmGauge" && a.position.y > 0) {
+        this.state.camera = a;
+      } else if (b === "client") {
+        this.state.game = a;
+      } else if (b === "_entityManager") {
+        this.state.entityManager = a._entityManager;
+      }
+    });
+    let a = false;
+    setInterval(() => {
+      const b = document.querySelector(".game-interface") !== null;
+      if (b !== a) {
+        this.onGameEnter();
+        a = b;
+      }
+    }, 100);
+  }
+};
+var s = new r();
+s.init();
