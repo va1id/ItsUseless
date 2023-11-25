@@ -4295,7 +4295,7 @@ var k = class {
     a.style.zIndex = "2147483647";
     a.style.padding = "4px";
     a.style.borderRadius = "10px";
-    a.style.background = "linear-gradient(to right, rgb(72, 61, 139), rgb(143, 0, 255))";
+    a.style.background = "linear-gradient(to right, rgb(255, 105, 180), rgb(255, 0, 0))";
     return a;
   }
 };
